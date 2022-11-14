@@ -1,12 +1,14 @@
-//Dependencies
-const Puppeteer = require("puppeteer")
+"use strict";
 
-//Variables
-const Self_Args = process.argv.slice(2)
+// Dependencies
+const puppeteer = require("puppeteer")
 
-//Functions
-async function Hide(){
-    const browser = await Puppeteer.launch({ headless: false, args: ["--no-sandbox", "--disable-setuid-sandbox"] })
+// Variables
+const args = process.argv.slice(2)
+
+// Functions
+async function hide(){
+    const browser = await puppeteer.launch({ headless: false, args: ["--no-sandbox", "--disable-setuid-sandbox"] })
     const page = await browser.newPage()
 
     await page.goto("https://neatnik.net/steganographr/", { waitUntil: "domcontentloaded" })
@@ -21,8 +23,8 @@ async function Hide(){
     await browser.close()
 }
 
-async function Show(){
-    const browser = await Puppeteer.launch({ headless: false, args: ["--no-sandbox", "--disable-setuid-sandbox"] })
+async function show(){
+    const browser = await puppeteer.launch({ headless: false, args: ["--no-sandbox", "--disable-setuid-sandbox"] })
     const page = await browser.newPage()
 
     await page.goto("https://neatnik.net/steganographr/", { waitUntil: "domcontentloaded" })
@@ -37,18 +39,12 @@ async function Show(){
 }
 
 //Main
-if(!Self_Args.length){
-    console.log(`node index.js <show/hide> <public_message> <private_message>
-Example hide: node index.js hide nice! Nice try!
-Example show: node index.js show resultofthehide`)
-    process.exit()
-}
+if(!args.length) return console.log("node index.js <show/hide> <publicMessage> <privateMessage>")
 
-if(Self_Args[0] == "show"){
-    Show()
-}else if(Self_Args[0] == "hide"){
-    Hide()
+if(args[0] === "show"){
+    show()
+}else if(args[0] === "hide"){
+    hide()
 }else{
     console.log("Invalid show/hide option.")
-    process.exit()
 }
